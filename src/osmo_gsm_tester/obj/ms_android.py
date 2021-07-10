@@ -62,7 +62,7 @@ class AndroidUE(MS, AndroidHost, srslte_common):
     def __init__(self, testenv, conf):
         self._run_node = RunNode.from_conf(conf.get('run_node', {}))
         self.apn_worker = AndroidApn.from_conf(conf.get('apn', {})) if conf.get('apn', {}) != {} else None
-        self.qc_diag_mon = qc_diag.QcDiag(testenv, conf)
+        self.qc_diag_mon = qc_diag.QcDiag(testenv, conf) if 'qc_diag' in self.features() else None
         super().__init__('androidue_%s' % self.addr(), testenv, conf)
         srslte_common.__init__(self)
         self.rem_host = None
@@ -173,7 +173,7 @@ class AndroidUE(MS, AndroidHost, srslte_common):
         self.configure()
         CONN_CHK = 'osmo-gsm-tester_androidue_conn_chk.sh'
 
-        if 'qc_diag' in self.features():
+        if self.qc_diag_mon:
             self.qc_diag_mon.start()
 
         if self._run_node.is_local():
@@ -214,11 +214,8 @@ class AndroidUE(MS, AndroidHost, srslte_common):
         self.brate_mon.start()
 
     def is_rrc_connected(self):
-        if not ('qc_diag' in self.features()):
-            raise log.Error('Monitoring RRC states not supported (missing qc_diag feature?)')
-
-        # if not self.qc_diag_mon.running():
-        #     raise log.Error('Diag monitoring crashed or was not started')
+        if not self.qc_diag_mon:
+            raise log.Error('Monitoring RRC states not supported. (Missing qc_diag feature!)')
 
         rrc_state = self.qc_diag_mon.get_rrc_state()
         if 'RRC_IDLE_CAMPED' in rrc_state:

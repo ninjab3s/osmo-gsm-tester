@@ -103,6 +103,8 @@ class ScatParser(AndroidHost):
     def __init__(self, testenv, conf):
         self.testenv = testenv
         self._run_node = RunNode.from_conf(conf.get('scat_parser', {}))
+        if self._run_node is {}:
+            return None
         super().__init__('scat_parser_%s' % self._run_node.run_addr())
         self.run_dir = util.Dir(self.testenv.test().get_run_dir().new_dir(self.name()))
         self.remote_run_dir = None
