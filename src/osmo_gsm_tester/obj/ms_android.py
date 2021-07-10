@@ -108,7 +108,8 @@ class AndroidUE(MS, AndroidHost, srslte_common):
             self.set_airplane_mode(True)
 
         # clear old diag files
-        self._clear_diag_logs()
+        if self.qc_diag_mon:
+            self._clear_diag_logs()
 
     def _clear_diag_logs(self):
         popen_args_clear_diag_logs = \
