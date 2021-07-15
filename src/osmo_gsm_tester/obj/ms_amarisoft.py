@@ -141,6 +141,25 @@ class AmarisoftUE(MS):
     def stop(self):
         self.testenv.stop_process(self.process)
 
+    def detach(self, ue_id):
+        import json
+        from websocket import create_connection
+        addr = self.addr()                                               # does this work?!
+        port = [9002]
+        ws = create_connection("ws://%s:%s" % (addr, port))
+
+        msg = { "message": "power_off", "ue_id": int(ue_id) }
+        msg_str = json.dumps(msg)
+        try:
+            self.dbg('sending CTRL msg: "%s"' % msg_str)
+            self.ws.send(msg_str)
+            self.dbg('waiting CTRL recv...')
+            result = self.ws.recv()
+            self.dbg('Received CTRL msg: "%s"' % result)
+        except Exception:
+            log.Error('Error sending CTLR msg to eNB. eNB still running?')
+            pass
+
     def connect(self, enb):
         self.log('Starting amarisoftue')
         self.enb = enb
