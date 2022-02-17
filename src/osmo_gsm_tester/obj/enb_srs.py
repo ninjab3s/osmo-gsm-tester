@@ -55,7 +55,7 @@ class srsENB(enb.eNodeB, srslte_common):
     CFGFILE = 'srsenb.conf'
     CFGFILE_SIB = 'srsenb_sib.conf'
     CFGFILE_RR = 'srsenb_rr.conf'
-    CFGFILE_DRB = 'srsenb_drb.conf'
+    CFGFILE_RB = 'srsenb_rb.conf'
     LOGFILE = 'srsenb.log'
     PCAPFILE = 'srsenb_mac.pcap'
     S1AP_PCAPFILE = 'srsenb_s1ap.pcap'
@@ -72,7 +72,7 @@ class srsENB(enb.eNodeB, srslte_common):
         self.config_file = None
         self.config_sib_file = None
         self.config_rr_file = None
-        self.config_drb_file = None
+        self.config_rb_file = None
         self.tracing_file = None
         self.interceptor_file = None
         self.log_file = None
@@ -84,7 +84,7 @@ class srsENB(enb.eNodeB, srslte_common):
         self.remote_config_file =  None
         self.remote_config_sib_file = None
         self.remote_config_rr_file = None
-        self.remote_config_drb_file = None
+        self.remote_config_rb_file = None
         self.remote_log_file = None
         self.remote_pcap_file = None
         self.remote_s1ap_pcap_file = None
@@ -305,7 +305,7 @@ class srsENB(enb.eNodeB, srslte_common):
         self.config_file = self.run_dir.child(srsENB.CFGFILE)
         self.config_sib_file = self.run_dir.child(srsENB.CFGFILE_SIB)
         self.config_rr_file = self.run_dir.child(srsENB.CFGFILE_RR)
-        self.config_drb_file = self.run_dir.child(srsENB.CFGFILE_DRB)
+        self.config_rb_file = self.run_dir.child(srsENB.CFGFILE_RB)
         self.log_file = self.run_dir.child(srsENB.LOGFILE)
         self.pcap_file = self.run_dir.child(srsENB.PCAPFILE)
         self.s1ap_pcap_file = self.run_dir.child(srsENB.S1AP_PCAPFILE)
@@ -329,7 +329,7 @@ class srsENB(enb.eNodeB, srslte_common):
             self.remote_config_file = self.remote_run_dir.child(srsENB.CFGFILE)
             self.remote_config_sib_file = self.remote_run_dir.child(srsENB.CFGFILE_SIB)
             self.remote_config_rr_file = self.remote_run_dir.child(srsENB.CFGFILE_RR)
-            self.remote_config_drb_file = self.remote_run_dir.child(srsENB.CFGFILE_DRB)
+            self.remote_config_rb_file = self.remote_run_dir.child(srsENB.CFGFILE_RB)
             self.remote_log_file = self.remote_run_dir.child(srsENB.LOGFILE)
             self.remote_pcap_file = self.remote_run_dir.child(srsENB.PCAPFILE)
             self.remote_s1ap_pcap_file = self.remote_run_dir.child(srsENB.S1AP_PCAPFILE)
@@ -343,7 +343,7 @@ class srsENB(enb.eNodeB, srslte_common):
         tracingfile = self.tracing_file if self._run_node.is_local() else self.remote_tracing_file
         sibfile = self.config_sib_file if self._run_node.is_local() else self.remote_config_sib_file
         rrfile = self.config_rr_file if self._run_node.is_local() else self.remote_config_rr_file
-        drbfile = self.config_drb_file if self._run_node.is_local() else self.remote_config_drb_file
+        rbfile = self.config_rb_file if self._run_node.is_local() else self.remote_config_rb_file
         logfile = self.log_file if self._run_node.is_local() else self.remote_log_file
         pcapfile = self.pcap_file if self._run_node.is_local() else self.remote_pcap_file
         s1ap_pcapfile = self.s1ap_pcap_file if self._run_node.is_local() else self.remote_s1ap_pcap_file
@@ -351,7 +351,7 @@ class srsENB(enb.eNodeB, srslte_common):
                                              tracing_filename=tracingfile,
                                              sib_filename=sibfile,
                                              rr_filename=rrfile,
-                                             drb_filename=drbfile,
+                                             rb_filename=rbfile,
                                              log_filename=logfile,
                                              pcap_filename=pcapfile,
                                              s1ap_pcap_filename=s1ap_pcapfile,
@@ -417,7 +417,7 @@ class srsENB(enb.eNodeB, srslte_common):
         self.gen_conf_file(self.config_file, srsENB.CFGFILE, values)
         self.gen_conf_file(self.config_sib_file, srsENB.CFGFILE_SIB, values)
         self.gen_conf_file(self.config_rr_file, srsENB.CFGFILE_RR, values)
-        self.gen_conf_file(self.config_drb_file, srsENB.CFGFILE_DRB, values)
+        self.gen_conf_file(self.config_rb_file, srsENB.CFGFILE_RB, values)
 
         if not self._run_node.is_local():
             self.rem_host.recreate_remote_dir(self.remote_inst)
@@ -426,7 +426,7 @@ class srsENB(enb.eNodeB, srslte_common):
             self.rem_host.scp('scp-cfg-to-remote', self.config_file, self.remote_config_file)
             self.rem_host.scp('scp-cfg-sib-to-remote', self.config_sib_file, self.remote_config_sib_file)
             self.rem_host.scp('scp-cfg-rr-to-remote', self.config_rr_file, self.remote_config_rr_file)
-            self.rem_host.scp('scp-cfg-drb-to-remote', self.config_drb_file, self.remote_config_drb_file)
+            self.rem_host.scp('scp-cfg-rb-to-remote', self.config_rb_file, self.remote_config_rb_file)
 
     def ue_add(self, ue):
         if self.ue is not None:
