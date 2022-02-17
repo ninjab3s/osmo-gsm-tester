@@ -283,7 +283,7 @@ class srsUE(MS, srslte_common):
         self.process.launch()
 
     def configure(self):
-        self.inst = util.Dir(os.path.abspath(self.testenv.suite().trial().get_inst('srslte', self._run_node.run_label())))
+        self.inst = util.Dir(os.path.abspath(self.testenv.suite().trial().get_inst('srsran', self._run_node.run_label())))
         if not os.path.isdir(self.inst.child('lib')):
             raise log.Error('No lib/ in', self.inst)
         if not self.inst.isfile('bin', srsUE.BINFILE):

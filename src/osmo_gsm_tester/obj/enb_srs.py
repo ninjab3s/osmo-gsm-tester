@@ -296,7 +296,7 @@ class srsENB(enb.eNodeB, srslte_common):
             f.write(r)
 
     def configure(self):
-        self.inst = util.Dir(os.path.abspath(self.testenv.suite().trial().get_inst('srslte',  self._run_node.run_label())))
+        self.inst = util.Dir(os.path.abspath(self.testenv.suite().trial().get_inst('srsran',  self._run_node.run_label())))
         if not os.path.isdir(self.inst.child('lib')):
             raise log.Error('No lib/ in', self.inst)
         if not self.inst.isfile('bin', srsENB.BINFILE):
